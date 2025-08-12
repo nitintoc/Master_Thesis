@@ -1,91 +1,115 @@
-Methodology
-1. Blemish Simulation
-Used OpenCV to synthetically introduce:
+# Robustness Testing of Object Detection and Segmentation Models Under Camera Blemishes
 
-Dust spots
+**Author:** Your Name  
+**Project:** Master_Thesis — Camera Blemish Impact on ADAS AI  
+**Date:** 2025-08-12
 
-Scratches
+---
 
-Smudges
+## Overview
+This project investigates the robustness of **object detection** and **segmentation** models (used in ADAS) when camera sensors exhibit manufacturing defects (referred to as *blemishes*). The main objective is to **derive measurable quality thresholds** for camera production by quantifying how blemishes affect downstream AI performance.
 
-Blurred areas
+---
 
-Controlled parameters: size, opacity, location, and shape.
+## Problem Statement
+> How can we define camera quality acceptance gates for blemishes based on their measurable impact on downstream AI models used in ADAS?
 
-2. Model Training & Validation
-Datasets: KITTI, BDD100K
+This repository contains tools to:
+- simulate blemishes on images,
+- train/evaluate detection & segmentation models,
+- analyze correlations between blemish characteristics and model performance,
+- produce data-driven quality thresholds,
+- deploy an end-to-end pipeline on Google Cloud Platform (GCP).
 
-Models:
+---
 
-YOLOv4 for real-time detection.
+## Key Objectives
+1. Simulate blemishes (dust, scratches, smudges, blur) using **OpenCV + Python**.  
+2. Train & evaluate models: **YOLOv4**, **Fast R-CNN**, **FCN**.  
+3. Quantify robustness & sensitivity of models to blemishes.  
+4. Statistically correlate blemish parameters with performance drop (mAP, IoU, pixel accuracy).  
+5. Define production quality gates for camera acceptance.  
+6. Deploy pipeline on **Google Cloud Platform**.
 
-Fast R-CNN for high-accuracy detection.
+---
 
-FCN for semantic segmentation.
+## Quick Start
 
-Evaluation Metrics:
+### Requirements
+- Python 3.8+ (3.10 recommended)  
+- GPU with CUDA for training (optional but recommended)  
+- Install dependencies:
+```bash
+pip install -r requirements.txt
 
-mAP (Mean Average Precision)
 
-IoU (Intersection over Union)
+Blemish Simulation (example)
+Model Training & Evaluation
+Use train_yolo.py, train_frcnn.py, train_fcn.py to train models on clean and artificially blemished datasets.
 
-Pixel Accuracy (for segmentation tasks)
+evaluate.py computes:
 
-3. Robustness Analysis
-Measure performance drop (%) as blemish severity increases.
+Detection: mAP @ IoU thresholds (e.g., 0.5)
 
-Compare sensitivity of different models to blemishes.
+Segmentation: mean IoU, pixel accuracy
 
-Identify critical defect characteristics that cause unacceptable performance degradation.
+Use metrics.py to log performance vs. blemish parameters (size, opacity, location, density).
 
-4. Statistical Correlation
-Regression and correlation analysis between:
+Statistical Analysis & Threshold Definition
+Run experiments sweeping blemish parameters (size, opacity, density, location).
 
-Blemish size, density, opacity
+Aggregate results into a CSV with columns:
+model, blemish_type, size, opacity, density, location, mAP, delta_mAP
 
-Drop in mAP / IoU / Pixel Accuracy
+Use regression / correlation (e.g., scikit-learn linear regression, decision trees, or logistic regression) to find relationships between blemish properties and performance drop.
 
-Determine pass/fail thresholds for manufacturing.
+Define quality gates such as:
 
-5. Cloud Deployment
-Implemented as an end-to-end pipeline:
+"Reject if expected mAP drop > X% at production blemish distribution."
 
-Data preprocessing
+Or categorical: Accept / Conditional Accept / Reject thresholds.
 
-Blemish simulation
+# Reproducibility & Experiments
 
-Model inference
+To ensure consistent and traceable research:
 
-Result visualization
+- Track all experiments (weights, configuration files, random seeds) in `results/experiments/`.
+- Use deterministic seeds wherever possible for reproducibility.
+- Save full configuration files alongside each checkpoint:
+  - Model hyperparameters
+  - Data augmentation list
+  - Blemish simulation parameters
 
-Deployed on Google Cloud Platform with:
+---
 
-AI Platform for model serving
+## Results & Expected Deliverables
 
-Cloud Storage for datasets
+This project will produce:
 
-Cloud Functions for automation
+- **Plots** showing model performance vs. blemish severity.
+- **Tables / CSV files** listing per-model quality thresholds.
+- A reproducible blemish simulator (`src/blemish_sim.py`).
+- GCP deployment scripts & a sample API endpoint.
+- A final thesis document and the codebase to reproduce all experiments.
 
-Languages: Python 3.10
+---
 
-Libraries: OpenCV, PyTorch, TensorFlow, NumPy, Matplotlib, Pandas
+## Example Metrics to Report
 
-Models: YOLOv4, Fast R-CNN, FCN
+- **Clean baseline** performance metrics:
+  - mAP (Mean Average Precision)
+  - IoU (Intersection over Union)
+  - Pixel Accuracy (for segmentation)
+- Performance under multiple blemish severities:
+  - `delta_mAP = (mAP_clean - mAP_blemished) / mAP_clean * 100%`
+- ROC-like curves showing:
+  - Acceptance rate vs. false-pass rate for candidate quality gates
 
-Cloud: Google Cloud Platform (AI Platform, Cloud Storage, Cloud Functions)
+---
 
-Tools: Jupyter Notebook, Docker, Git
+## How to Contribute
 
-Expected Outcomes
-Quantitative relationship between blemish severity and AI model performance.
-
-Defined manufacturing quality thresholds for camera acceptance.
-
-Open-source simulation tool for blemish testing.
-
-Cloud-deployable AI robustness testing pipeline.
-
-Citation
-If you use this work in your research, please cite:
-
-View published paper: https://www.sciencedirect.com/science/article/pii/S1877050924000619
+1. **Fork** the repository.
+2. Create a feature branch:
+   ```bash
+   git checkout -b feat/your-feature
