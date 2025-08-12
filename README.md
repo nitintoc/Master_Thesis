@@ -1,7 +1,7 @@
 # Robustness Testing of Object Detection and Segmentation Models Under Camera Blemishes
 
-**Author:** Your Name  
-**Project:** Master_Thesis — Camera Blemish Impact on ADAS AI  
+**Author:** Nitin Augustine
+**Project:** Impact of Blemish Artefacts on Object Detection Models in Autonomous Driving: A Study on Camera Module Manufacturing Defects
 **Date:** 2025-08-12
 
 ---
