@@ -39,35 +39,7 @@ This repository contains tools to:
 - Python 3.8+ (3.10 recommended)  
 - GPU with CUDA for training (optional but recommended)  
 - Install dependencies:
-```bash
-pip install -r requirements.txt
 
-
-Blemish Simulation (example)
-Model Training & Evaluation
-Use train_yolo.py, train_frcnn.py, train_fcn.py to train models on clean and artificially blemished datasets.
-
-evaluate.py computes:
-
-Detection: mAP @ IoU thresholds (e.g., 0.5)
-
-Segmentation: mean IoU, pixel accuracy
-
-Use metrics.py to log performance vs. blemish parameters (size, opacity, location, density).
-
-Statistical Analysis & Threshold Definition
-Run experiments sweeping blemish parameters (size, opacity, density, location).
-
-Aggregate results into a CSV with columns:
-model, blemish_type, size, opacity, density, location, mAP, delta_mAP
-
-Use regression / correlation (e.g., scikit-learn linear regression, decision trees, or logistic regression) to find relationships between blemish properties and performance drop.
-
-Define quality gates such as:
-
-"Reject if expected mAP drop > X% at production blemish distribution."
-
-Or categorical: Accept / Conditional Accept / Reject thresholds.
 
 # Reproducibility & Experiments
 
